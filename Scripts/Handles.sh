@@ -4,28 +4,6 @@
 
 PKG_PATH="$GITHUB_WORKSPACE/wrt/package/"
 
-#预置HomeProxy数据
-if [ -d *"homeproxy"* ]; then
-	echo " "
-
-	HP_RULE="surge"
-	HP_PATH="homeproxy/root/etc/homeproxy"
-
-	rm -rf ./$HP_PATH/resources/*
-
-	git clone -q --depth=1 --single-branch --branch "release" "https://github.com/Loyalsoldier/surge-rules.git" ./$HP_RULE/
-	cd ./$HP_RULE/ && RES_VER=$(git log -1 --pretty=format:'%s' | grep -o "[0-9]*")
-
-	echo $RES_VER | tee china_ip4.ver china_ip6.ver china_list.ver gfw_list.ver
-	awk -F, '/^IP-CIDR,/{print $2 > "china_ip4.txt"} /^IP-CIDR6,/{print $2 > "china_ip6.txt"}' cncidr.txt
-	sed 's/^\.//g' direct.txt > china_list.txt ; sed 's/^\.//g' gfw.txt > gfw_list.txt
-	mv -f ./{china_*,gfw_list}.{ver,txt} ../$HP_PATH/resources/
-
-	cd .. && rm -rf ./$HP_RULE/
-
-	cd $PKG_PATH && echo "homeproxy date has been updated!"
-fi
-
 #修改argon主题字体和颜色
 if [ -d *"luci-theme-argon"* ]; then
 	echo " " && cd ./luci-theme-argon/
@@ -42,15 +20,6 @@ if [ -d *"luci-app-aurora-config"* ]; then
 	sed -i "s/nav_submenu_type '.*'/nav_submenu_type 'boxed-dropdown'/g" $(find ./root/usr/share/aurora/ -type f -name "*.template")
 
 	cd $PKG_PATH && echo "theme-aurora has been fixed!"
-fi
-
-#修改mini-diskmanager菜单位置
-if [ -d *"luci-app-mini-diskmanager"* ]; then
-	echo " " && cd ./luci-app-mini-diskmanager/
-
-	sed -i "s/services/system/g" ./luci-app-mini-diskmanager/root/usr/share/luci/menu.d/luci-app-mini-diskmanager.json
-
-	cd $PKG_PATH && echo "mini-diskmanager has been fixed!"
 fi
 
 #修复TailScale配置文件冲突
