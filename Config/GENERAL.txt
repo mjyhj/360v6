@@ -13,6 +13,8 @@ CONFIG_PACKAGE_libyaml=y
 CONFIG_PACKAGE_libruby=y
 CONFIG_PACKAGE_unzip=y
 #增加插件
+CONFIG_PACKAGE_luci-theme-aurora=y # aurora主题
+CONFIG_PACKAGE_luci-app-aurora-config=y # aurora主题
 CONFIG_PACKAGE_luci-app-easytier=y # easytier-luci
 CONFIG_PACKAGE_easytier-noweb=y # easytier-仅核心无web
 CONFIG_PACKAGE_luci-app-wechatpush=y # 微信推送
